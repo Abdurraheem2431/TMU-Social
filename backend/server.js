@@ -4,6 +4,7 @@ const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
 const User = require('./models/User');
+const Post = require('./models/Post');
 
 const PORT = 8080;
 const DATABASE_HOST = 'localhost';
@@ -32,7 +33,12 @@ default_Accounts = [
     {username: "Admin", password: "theLeafs"},
     {username: "TestAccount1", password: "1234567"},
     {username: "TestAccount2", password: "ABCDEFG"}
-]
+];
+
+default_Posts =[
+    {user: "Admin", content: "First Post on Platform", date: Date.now()},
+    {user: "TestAccount1", content: "Second Post on Platform", date: Date.now()}
+];
 
 async function addDefaultAccounts(){
     const userCount = await User.countDocuments();
@@ -51,6 +57,24 @@ async function addDefaultAccounts(){
     }
 };
 addDefaultAccounts();
+
+async function addDefaultPosts(){
+    const postCount = await Post.countDocuments();
+
+    if (postCount === 0 ){
+        default_Posts.forEach(post => {
+            const newPost = new Post(post);
+            newPost.save()
+                .then(() => console.log("Post added with username: " + post.user))
+                .catch(err => console.error("Error has occured: " + err));
+        });
+
+    }else{
+        console.log("Posts already exist, not adding");
+        return;
+    }
+};
+addDefaultPosts();
 
 //API
 
