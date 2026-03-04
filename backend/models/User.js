@@ -12,6 +12,11 @@ const UserSchema = mongoose.Schema({
         unique: false,
         required: true,
         trim: true
+    },
+    pfp: {
+        type: String,
+        unique: false,
+        required: true
     }
 });
 
