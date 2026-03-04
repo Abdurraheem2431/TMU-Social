@@ -5,6 +5,8 @@ const path = require('path');
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const Post = require('./models/Post');
+const multer = require('multer');
+const upload = multer({dest: '../frontend/public/images'});
 
 const PORT = 8080;
 const DATABASE_HOST = 'localhost';
@@ -30,15 +32,15 @@ db.on('error', function (e){
 
 // Default Accounts
 default_Accounts = [
-    {username: "Admin", password: "theLeafs"},
-    {username: "TestAccount1", password: "1234567"},
-    {username: "TestAccount2", password: "ABCDEFG"}
+    {username: "Admin", password: "theLeafs", pfp: "default.webp"},
+    {username: "TestAccount1", password: "1234567", pfp: "default.webp"},
+    {username: "TestAccount2", password: "ABCDEFG", pfp: "defualt.webp"}
 ];
 
 //Default Posts
 default_Posts =[
     {user: "Admin", content: "First Post on Platform", date: Date.now()},
-    {user: "TestAccount1", content: "Second Post on Platform", date: Date.now()}
+    {user: "TestAccount1", content: "Second Post on Platform", image: "default.webp", date: Date.now()}
 ];
 
 
@@ -98,7 +100,8 @@ app.post('/api/user', express.json(), async (req, res) => {
 
     const newUser = new User({
         username: user.username.toLowerCase(),
-        password: user.password
+        password: user.password,
+        pfp: "default.webp"
     });
     try {
         await newUser.save();
