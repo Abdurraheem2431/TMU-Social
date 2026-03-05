@@ -258,7 +258,7 @@ app.post('/api/posts', upload.single('image'), async (req, res) => {
     }
 
     const newPost = {
-        user: post.user,
+        user: post.user.toLowerCase(),
         content: post.content,
         date: post.date,
         userpfp: post.userpfp,

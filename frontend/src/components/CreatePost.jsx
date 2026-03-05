@@ -26,7 +26,7 @@ function CreatePost({username}){
         try{
             console.log(user)
             const formData = new FormData();
-            formData.append('user', username);
+            formData.append('user', username.toLowerCase());
             formData.append('content', content);
             formData.append('date', Date.now());
             formData.append('userpfp', user.pfp);
@@ -37,7 +37,7 @@ function CreatePost({username}){
                 body: formData
             });
 
-            if (response.status() === 200){
+            if (response.status === 201){
                 alert("Post Added Successfully");
                 return;
             }else{
