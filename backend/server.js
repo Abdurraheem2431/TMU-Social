@@ -151,5 +151,19 @@ app.get('/api/posts', async (req, res) => {
     return res.status(200).json(randomPosts);
 });
 
+app.get('/api/user/pfp/:username', async (req, res) => {
+    try {
+        const userName = req.params.username.toLowerCase();
+        const user = await User.findOne({ username: userName }).select('pfp -_id');
+
+        if (user) {
+            return res.status(200).json(user);
+        } else {
+            return res.status(404).json({ error: "User not found" });
+        }
+    } catch (error) {
+        return res.status(500).json({ error: "Server error" });
+    }
+});
 
 app.listen(PORT, () => {console.log("Server started on port: " + PORT)});
