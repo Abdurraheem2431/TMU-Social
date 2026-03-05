@@ -59,6 +59,7 @@ img {
     background-color: #111318;
     transition: border-color 0.2s;
     max-width: 560px;
+    position: relative;
 }
 .post-card:hover {
   border-color: #2e3250;
@@ -131,4 +132,59 @@ img {
   font-size: 60px;
   margin-top: 10px;
   margin-right: 40px;
+}
+
+.post-menu {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
+.post-menu-btn {
+  background: transparent;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  color: #f0f2ff;
+  font-size: 22px;
+  line-height: 1;
+  border-radius: 10px;
+}
+
+.post-menu-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.post-menu-dropdown {
+  position: absolute;
+  top: 34px;
+  right: 0;
+  min-width: 140px;
+  background: #111318;
+  border: 1px solid #2e3250;
+  border-radius: 12px;
+  padding: 6px;
+  z-index: 2000;
+}
+
+.post-menu-item {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #f0f2ff;
+  font-size: 14px;
+}
+
+.post-menu-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.post-menu-item-disabled {
+  padding: 8px 10px;
+  color: #888;
+  font-size: 14px;
 }

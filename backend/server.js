@@ -196,13 +196,12 @@ app.get('/api/user/pfp/:username', async (req, res) => {
 //Gets all comments related to a post id
 app.get('/api/comments', async (req, res) => {
     const id = req.query.postID;
-   
     if (!id){
         return res.status(400).json({error: "Post ID Required"});
     }
 
     const comments = await Comment.find({postId: id});
-   
+
     return res.status(200).json(comments);
 
 
@@ -225,7 +224,6 @@ app.post('/api/comments', express.json(), async (req, res) => {
     } catch (err) {
         console.error("Error adding comment: " + err);
         return res.status(500).json({ error: "Failed to save comment" });
-   
     }
 
 });
@@ -244,7 +242,7 @@ app.post('/api/posts', upload.single('image'), async (req, res) => {
         content: post.content,
         date: post.date,
         userpfp: post.userpfp,
-        image: image.filename
+        image: req.file?.filename
     }
 
     const addPost = new Post(newPost);
@@ -267,7 +265,7 @@ app.get('/api/user', async (req, res) =>{
         return res.status(400).json({error: "Need username"});
     }
 
-     try{
+    try{
         const user = await User.findOne({username: username});
         if (user){
             return res.status(200).json(user);
@@ -278,6 +276,31 @@ app.get('/api/user', async (req, res) =>{
         return res.status(500).json({ error: "Failed to find user" });
     }
 
+});
+
+app.delete('/api/posts/:id', async (req, res) => {
+    const id = req.params.id;
+    if (!id) {
+        return res.status(400).json({ error: "Post ID required" });
+    }
+
+    try {
+        const deletedPost = await Post.findByIdAndDelete(id);
+
+        if (!deletedPost) {
+            return res.status(404).json({ error: "Post not found" });
+        }
+        const deletedComments = await Comment.deleteMany({ postId: id });
+
+        return res.status(200).json({
+            deletedPost,
+            deletedComments: deletedComments.deletedCount
+        }
+    );
+
+    } catch (error) {
+        return res.status(500).json({ error: "Failed to delete post" });
+    }
 });
 
 app.listen(PORT, () => {console.log("Server started on port: " + PORT)});

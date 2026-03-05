@@ -1,5 +1,6 @@
 import { useState, useEffect, use} from "react";
 import ShowComments from "./ShowComments";
+import PostMenu from "./PostMenu";
 
 function DisplayPosts({refresh, username}) {
 
@@ -11,6 +12,22 @@ function DisplayPosts({refresh, username}) {
             setComments(null);
         } else {
             setComments(id);
+        }
+    };
+
+    const deletePost = async (postId) => {
+        try {
+            const response = await fetch(`/api/posts/${postId}`, { method: "DELETE" });
+            const result = await response.json();
+            
+            if (response.status === 200) {
+                setPosts(prev => prev.filter(p => p._id !== postId));
+            } else {
+                alert(result.error);
+            }
+        } catch (error) {
+            alert("Failed to delete post");
+            console.error("Error deleting post:", error);
         }
     };
 
@@ -45,7 +62,13 @@ function DisplayPosts({refresh, username}) {
                     if (post.image){
                         return(
                             <div className="post-card" key={post._id}>
-                               <div className="post-header">
+                                <PostMenu
+                                postId={post._id}
+                                postUser={post.user}
+                                currentUsername={username}
+                                onDelete={deletePost}
+                                />
+                                <div className="post-header">
                                     <img 
                                         src={`/images/${post.userpfp}`}
                                         className="post-pfp"
@@ -67,7 +90,13 @@ function DisplayPosts({refresh, username}) {
                     }else{
                         return(
                             <div className="post-card" key={post._id}>
-                               <div className="post-header">
+                                <PostMenu
+                                postId={post._id}
+                                postUser={post.user}
+                                currentUsername={username}
+                                onDelete={deletePost}
+                                />
+                                <div className="post-header">
                                     <img 
                                         src={`/images/${post.userpfp}`}
                                         className="post-pfp"
