@@ -116,7 +116,9 @@ function UserPosts({ username }) {
                         </div>
                         <div className="post-content">
                             <p>{post.content}</p>
+                            <div className='post-card-image'>
                             {post.image && <img src={`/images/${post.image}`} className="post-image" alt="post" />}
+                            </div>
                         </div>
                     </div>
                 ))
