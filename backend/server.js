@@ -5,6 +5,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const User = require('./models/User');
 const Post = require('./models/Post');
+const Comment = require('./models/Comment');
 const multer = require('multer');
 const upload = multer({dest: '../frontend/public/images'});
 
@@ -41,6 +42,12 @@ default_Accounts = [
 default_Posts =[
     {user: "Admin", content: "First Post on Platform", date: Date.now(), userpfp: "default.webp"},
     {user: "TestAccount1", content: "Second Post on Platform", image: "default.webp", date: Date.now(), userpfp: "default.webp"}
+];
+
+//default Comments
+default_Comments=[
+    {user: "Admin", content: "First Comment"},
+    {user: "TestAccount1", content: "Second Comment"}
 ];
 
 
@@ -82,6 +89,29 @@ async function addDefaultPosts(){
     }
 };
 addDefaultPosts();
+
+// Adds Default Comments to database if not already Added
+async function addDefaultComments(){
+    const commentCount = await Comment.countDocuments();
+
+    const postID = await Post.findOne();
+
+    if (commentCount === 0 ){
+        default_Comments.forEach(comment => {
+            const addComment = {...comment, postId: postID._id}
+            console.log(addComment)
+            const newComment = new Comment(addComment);
+            newComment.save()
+                .then(() => console.log("Comment added with username: " + comment.user))
+                .catch(err => console.error("Error has occured: " + err));
+        });
+
+    }else{
+        console.log("Comments already exist, not adding");
+        return;
+    }
+};
+addDefaultComments();
 
 //API
 
@@ -126,23 +156,20 @@ app.get('/api/user/search', async (req, res) => {
     try{
         const user = await User.findOne({username: userName, password: userPass});
         if (user){
-            console.log("User Found");
             return res.status(200).json(user);
         }else{
-            return res.status(401).json({error: "User not Found"});
+            return res.status(404).json({error: "User not Found"});
         }
     }catch (error){
         return res.status(500).json({ error: "Failed to find user" });
     }
 });
 
-
+// Gets 10 random posts to show to user
 app.get('/api/posts', async (req, res) => {
     const randomPosts = await Post.aggregate([
         { $sample: {size: 10}}
     ]);
-
-    console.log(randomPosts);
 
     if (randomPosts.length === 0){
         return res.status(404).json({error: "No posts Found"});
@@ -164,6 +191,93 @@ app.get('/api/user/pfp/:username', async (req, res) => {
     } catch (error) {
         return res.status(500).json({ error: "Server error" });
     }
+});
+
+//Gets all comments related to a post id
+app.get('/api/comments', async (req, res) => {
+    const id = req.query.postID;
+   
+    if (!id){
+        return res.status(400).json({error: "Post ID Required"});
+    }
+
+    const comments = await Comment.find({postId: id});
+   
+    return res.status(200).json(comments);
+
+
+});
+
+// Adds new Comment to a Post
+app.post('/api/comments', express.json(), async (req, res) => {
+    const newComment = req.body;
+    
+    if (!newComment.postId || !newComment.user || !newComment.content){
+        return res.status(400).json({error: "Bad request need all fields"});
+    }
+    console.log(newComment.user);
+    const comment = new Comment(newComment);
+
+    try {
+        await comment.save();
+        console.log("Comment added successfully");
+        return res.status(201).json(comment);
+    } catch (err) {
+        console.error("Error adding comment: " + err);
+        return res.status(500).json({ error: "Failed to save comment" });
+   
+    }
+
+});
+
+// Creates a post
+app.post('/api/posts', upload.single('image'), async (req, res) => {
+    const post = req.body;
+    const image = req.file;
+    console.log("Here");
+    if (!post.content || !post.user || !post.date){
+        return res.status(400).json({error: "Need content, user and date"});
+    }
+
+    const newPost = {
+        user: post.user,
+        content: post.content,
+        date: post.date,
+        userpfp: post.userpfp,
+        image: image.filename
+    }
+
+    const addPost = new Post(newPost);
+    try {
+            await addPost.save();
+            console.log("Post added successfully");
+            return res.status(201).json(addPost);
+        } catch (err) {
+            console.error("Error adding post: " + err);
+            return res.status(500).json({ error: "Failed to save post" });
+    
+        }
+});
+
+// Finds a user based on username
+app.get('/api/user', async (req, res) =>{
+    const username = req.query.username.toLowerCase();
+
+    if (!username){
+        return res.status(400).json({error: "Need username"});
+    }
+
+     try{
+        const user = await User.findOne({username: username});
+        if (user){
+            return res.status(200).json(user);
+        }else{
+            return res.status(404).json({error: "User not Found"});
+        }
+    }catch (error){
+        return res.status(500).json({ error: "Failed to find user" });
+    }
+
 });
 
 app.listen(PORT, () => {console.log("Server started on port: " + PORT)});

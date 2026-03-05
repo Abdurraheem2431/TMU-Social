@@ -2,12 +2,12 @@ import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import Nav from './Nav';
 import DisplayPosts from './DisplayPosts';
+import CreatePost from './CreatePost'
 
 function UserHome() {
     const [refresh, setRefresh] = useState(false);
     const location = useLocation();
     const username = location.state; 
-    console.log(username.username);
 
     const changePosts = () => {
         setRefresh(prev => !prev)
@@ -16,8 +16,13 @@ function UserHome() {
     return (
         <>
             <Nav username={username.username} />
-            <DisplayPosts refresh={refresh} />
-            <button onClick={changePosts}></button>
+            <br></br>
+            <br></br>
+            <div className='user-container'>
+            <DisplayPosts refresh={refresh} username={username.username}/>
+            <CreatePost username={username.username}/>
+            </div>
+            <button onClick={changePosts}>New Posts</button>
         </>
     );
 }
