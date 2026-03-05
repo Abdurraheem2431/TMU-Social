@@ -24,7 +24,7 @@ function Login(){
             if(response.status === 200){
                 alert("Logged In Successfully");
                 setFormData({username: '', password: ''})
-                navigate('/home', { state: { username: user.username } });
+                navigate('/home', { state: { username: user.username.toLowerCase() } });
             }
             else{
                 alert('Wrong Username or Password');

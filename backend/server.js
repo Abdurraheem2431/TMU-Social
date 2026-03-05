@@ -262,7 +262,7 @@ app.post('/api/posts', upload.single('image'), async (req, res) => {
         content: post.content,
         date: post.date,
         userpfp: post.userpfp,
-        image: req.file?.filename
+        image: image
     }
 
     const addPost = new Post(newPost);
@@ -287,6 +287,7 @@ app.get('/api/user', async (req, res) =>{
 
     try{
         const user = await User.findOne({username: username});
+        console.log(user);
         if (user){
             return res.status(200).json(user);
         }else{

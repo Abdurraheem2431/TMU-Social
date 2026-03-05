@@ -17,9 +17,6 @@ function CreatePost({username}){
             if (response1.status === 404){
                 alert("User not found, no Post Made");
                 return;
-            }else{
-                alert("Post has been made");
-                return;
             }
         }catch(error){
             console.log("Error finding User: ", error);
@@ -42,8 +39,10 @@ function CreatePost({username}){
 
             if (response.status() === 200){
                 alert("Post Added Successfully");
+                return;
             }else{
                 alert("No Post Added Somethinng went wrong");
+                return;
             }
         }catch(error){
             console.log("Error when creating post: ", error);
