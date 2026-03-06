@@ -14,7 +14,9 @@ const Nav = ({ username }) => {
                     <li><Link to="/search" state={{  username }} className="nav-item">
                     <img src="/images/search.webp" alt="Search Icon" className="nav-icon" />
                     Search</Link></li>
-                    <li className='settings'><Link to='/settings' state={{  username }}>Settings</Link></li>
+                    <li><Link to='/settings' state={{  username }} className="nav-item">
+                    <img src="/images/setting.png" alt="Settings Icon" className="nav-icon" />
+                    Settings</Link></li>
                     <li className="nav-logout"><Link to="/">Sign Out</Link></li>
                 </ul>
             </nav>
