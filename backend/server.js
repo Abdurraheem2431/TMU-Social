@@ -479,6 +479,7 @@ app.delete('/api/user/:username',  async (req, res) => {
             return res.status(404).json({error: "User Not Found"});
         }else{
             await User.deleteOne({username: username});
+            await Post.deleteMany({user: username});
             return res.status(204).send();
         }
     }catch(error){
