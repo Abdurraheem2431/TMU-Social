@@ -305,7 +305,6 @@ img {
   bottom: 24px;
   width: auto;
   height: 60px;
-  border: 2px solid #ffffff;
   border-radius: 100px;
   background-color: #ffffff;
   color: #000000;
@@ -316,8 +315,7 @@ img {
 }
 
 .create-post-fab:hover {
-  background-color: #0d3042;
-  border-color: #0084ff;
+  background-color: #bebebe;
 }
 
 .create-post-backdrop {
