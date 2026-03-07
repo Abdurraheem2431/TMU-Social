@@ -298,6 +298,7 @@ app.get('/api/user', async (req, res) =>{
 
 });
 
+// Deletes a post and all comments related to that post
 app.delete('/api/posts/:id', async (req, res) => {
     const id = req.params.id;
     if (!id) {
@@ -353,6 +354,7 @@ app.patch('/api/posts/:id', express.json(), async (req, res) => {
     }
 });
 
+// Search for posts by a specific user
 app.get('/api/posts/search', async (req,res) =>{
     const user = req.query.username.toLowerCase();
 
@@ -373,6 +375,7 @@ app.get('/api/posts/search', async (req,res) =>{
     
 });
 
+// Edit a profile picture
 app.patch('/api/pfp', upload.single("image"), async (req, res) => {
     const user = req.body.user;
     const image = req.file?.filename;
@@ -407,7 +410,7 @@ app.patch('/api/pfp', upload.single("image"), async (req, res) => {
     }
 });
 
-
+// Edit a password
 app.patch('/api/password/:username', express.json(), async (req, res) => {
     const username = req.params.username;
     const pass = req.body;
@@ -433,6 +436,7 @@ app.patch('/api/password/:username', express.json(), async (req, res) => {
     }
 });
 
+// Edit a username and update all posts and comments
 app.patch('/api/username/:username', express.json(), async (req, res) => {
     const username = req.params.username;
     const user = req.body;
@@ -469,6 +473,7 @@ app.patch('/api/username/:username', express.json(), async (req, res) => {
     }
 });
 
+// Deletes a user and all posts and comments
 app.delete('/api/user/:username',  async (req, res) => {
     const username = req.params.username;
     try{
@@ -485,6 +490,7 @@ app.delete('/api/user/:username',  async (req, res) => {
     }
 });
 
+// Search for posts with a keyword and sort by date
 app.get('/api/posts/sortedsearch', async (req, res) => {
     const { search, sort } = req.query;
     try {
