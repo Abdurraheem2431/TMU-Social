@@ -1,4 +1,4 @@
-# CPS630 Assignment 2: CRUD Application: TMU Social
+CRUD Application: TMU Social
 
 ## Overview
 
@@ -13,8 +13,11 @@ The purpose of the application is to simulate the core functionality of a social
 In the future, the application could be extended with features such as likes, direct messaging, notifications, following other users, stronger authentication methods and security . Search could also be improved with more advanced filtering, and the application could even be deployed to allow people to interact with each other in real time. Overall, the project establishes a strong foundation and has a lot of room for future expansion.
 
 
-https://github.com/user-attachments/assets/cbf25823-e25d-48c7-90a8-d60c4dc418e5
+---
 
+## Application Video Demonstration
+
+https://github.com/user-attachments/assets/6124d8e8-e048-4c82-b2c0-81a3315dede1
 
 ---
 
