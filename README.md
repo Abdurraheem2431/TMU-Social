@@ -180,16 +180,3 @@ One of our biggest successes during this assignment was our coordination and use
 
 As for challenges, a lot of the hardest parts came from troubleshooting smaller issues across the full stack such as file uploads, styling concerns and random small bugs. At the same time, those issues were things we noticed fairly quickly and fixed as we worked. We also spent time making sure the different views stayed consistent and that invalid actions or broken requests were handled clearly instead of failing silently. Overall, we are happy with how the final application came together. This assignment helped improve our understanding of React, Express, MongoDB, Mongoose, REST APIs, and especially GitHub collaboration
 
-
----
-
-## Submission Contents
-
-This submission includes:
-
-- Full `frontend` and `backend` project folders
-- All required source files
-- `package.json` files
-- Static assets and image upload handling
-- README with overview, documentation, and reflection
-- Short demo video in `.mp4` format
